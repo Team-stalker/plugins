@@ -41,6 +41,8 @@ iglobal
         check_map_point_x    dd -211.46           ; Вход в подземелье, на кордоне. На пороге.
         check_map_point_y    dd -18.02
         check_map_point_z    dd -136.91
+
+        medkit_scientic      db 'medkit_scientic',0
 endg
         pushad
 
@@ -80,6 +82,9 @@ endg
                    ; Вывод в консоль и тд.
 
                    cinvoke xrCore.msg,actor_found_position,[edi+CLIENTCLASS.addr_player_name],dword[posx],dword[posx+4],dword[posy],dword[posy+4],dword[posz],dword[posx+4]
+
+                   ; Выдать аптечку
+                   stdcall stdcall [SpawnObjectClient],edi,medkit_scientic    ; edi = CLIENT
 
         jmp .actor_next
 
