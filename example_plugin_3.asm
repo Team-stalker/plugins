@@ -92,7 +92,7 @@ endp
 ;*******************************************************************************
 proc GetDistancePoint, pClass, PointPosX, PointPosY, PointPosZ
 iglobal
-        actor_max_offset_for_point    dd 2.00
+        actor_max_offset_for_point    dd 2.00   ; максимальное смещение от центра заданных координат
         actor_min_offset_for_point    dd 4.00   ; actor_min_offset_for_point = actor_max_offset_for_point*2
 endg
         push  ebx ecx edx esi edi
