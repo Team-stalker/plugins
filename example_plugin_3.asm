@@ -84,7 +84,7 @@ endg
                    cinvoke xrCore.msg,actor_found_position,[edi+CLIENTCLASS.addr_player_name],dword[posx],dword[posx+4],dword[posy],dword[posy+4],dword[posz],dword[posx+4]
 
                    ; Выдать аптечку
-                   stdcall stdcall [SpawnObjectClient],edi,medkit_scientic    ; edi = CLIENT
+                   stdcall [SpawnObjectClient],edi,medkit_scientic    ; edi = CLIENT
 
         jmp .actor_next
 
