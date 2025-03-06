@@ -22,7 +22,7 @@ endg
         mov eax, [fdwReason]
 .if eax = DLL_PROCESS_ATTACH
         stdcall API_Init
-        invoke timeSetEvent,1000,0x1000000,ActorUpdate_Timer,NULL,1       
+        invoke timeSetEvent,1000,0x1000000,ActorUpdate_Timer,NULL,1      
 .endif
         mov eax,TRUE
         ret
@@ -41,6 +41,8 @@ iglobal
         check_map_point_x    dd -211.46           ; Вход в подземелье, на кордоне. На пороге.
         check_map_point_y    dd -18.02
         check_map_point_z    dd -136.91
+
+        mp_medkit            db 'mp_medkit',0
 endg
         pushad
 
@@ -80,6 +82,10 @@ endg
                    ; Вывод в консоль и тд.
 
                    cinvoke xrCore.msg,actor_found_position,[edi+CLIENTCLASS.addr_player_name],dword[posx],dword[posx+4],dword[posy],dword[posy+4],dword[posz],dword[posx+4]
+                        
+                   ; Выдать аптечку, если игрок зашел в координаты
+                   stdcall [SpawnObjectClient],edi,mp_medkit  
+
 
         jmp .actor_next
 
