@@ -65,7 +65,7 @@ endg
                    ; проверяем, что игрок находится в игре
                    mov  eax, [edi+CLIENT.ADDR]
                    or   eax, eax
-                   je   .exit_true
+                   je   .send_ret
                    mov  eax, dword[eax+0x00008170]
                    cmp  byte[eax+0x63],4    ; игрока завалили
                    je   .actor_next
