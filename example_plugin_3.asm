@@ -60,15 +60,24 @@ endg
         or  eax,eax
         je  .send_ret
         mov edi,eax
-                   cmp byte[edi+CLIENTCLASS.wMinute],0
-                   je  .send_ret
+
+.actor_validate:
+                   ; проверяем, что игрок находится в игре
+                   mov  eax, [edi+CLIENT.ADDR]
+                   or   eax, eax
+                   je   .exit_true
+                   mov  eax, dword[eax+0x00008170]
+                   cmp  byte[eax+0x63],4    ; игрока завалили
+                   je   .actor_next
+                   cmp  byte[eax+0x63],0x0C ; игрок в наблюдателях
+                   je   .actor_next
+
+.actor_compare_position:
 
                    ; Позиция 1
                    stdcall GetDistancePoint,edi,[check_map_point_x_l01],[check_map_point_y_l01],[check_map_point_z_l01]
                    or  eax, eax
                    je  .actor_found_pos
-
-    
 
                    ; Позиция 2 финальная
                    stdcall GetDistancePoint,edi,[check_map_point_x_l02],[check_map_point_y_l02],[check_map_point_z_l02]
