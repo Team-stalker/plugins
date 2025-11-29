@@ -1,6 +1,6 @@
 
         ; ===================
-        ; XRAY PROJECT API
+        ; XRAY PROJECT API     - плагин для отслеживания вхождения в выделенные координаты
         ; ===================
         format PE GUI 4.0 DLL
         include 'win32ax.inc'
@@ -38,9 +38,13 @@ iglobal
         posy                 dq ?
         posz                 dq ?
 
-        check_map_point_x    dd -211.46           ; Вход в подземелье, на кордоне. На пороге.
-        check_map_point_y    dd -18.02
-        check_map_point_z    dd -136.91
+        check_map_point_x_l01    dd -211.46       
+        check_map_point_y_l01    dd -18.02
+        check_map_point_z_l01    dd -136.91
+
+        check_map_point_x_l02    dd -206.46       
+        check_map_point_y_l02    dd -17.02
+        check_map_point_z_l02    dd -132.91
 
         medkit_scientic      db 'medkit_scientic',0
 endg
@@ -56,26 +60,31 @@ endg
         or  eax,eax
         je  .send_ret
         mov edi,eax
-                   cmp byte[edi+CLIENTCLASS.wHour],0
-                   jne .actor_get_pos_t
                    cmp byte[edi+CLIENTCLASS.wMinute],0
                    je  .send_ret
-.actor_get_pos_t:
-                   stdcall GetDistancePoint,edi,[check_map_point_x],[check_map_point_y],[check_map_point_z]
+
+                   ; Позиция 1
+                   stdcall GetDistancePoint,edi,[check_map_point_x_l01],[check_map_point_y_l01],[check_map_point_z_l01]
                    or  eax, eax
-                   jne .actor_next
+                   je  .actor_found_pos
 
-                   ; Игрок находится в заданной позиции.
+    
 
-                   movss xmm0, dword[check_map_point_x]
+                   ; Позиция 2 финальная
+                   stdcall GetDistancePoint,edi,[check_map_point_x_l02],[check_map_point_y_l02],[check_map_point_z_l02]
+                   or  eax, eax
+                   jne  .actor_next
+
+.actor_found_pos:
+                   movss xmm0, dword[edi+CLIENTCLASS.actor_pos_x]
                    cvtss2sd xmm0,xmm0
                    movsd [posx],xmm0
 
-                   movss xmm0, dword[check_map_point_y]
+                   movss xmm0, dword[edi+CLIENTCLASS.actor_pos_y]
                    cvtss2sd xmm0,xmm0
                    movsd [posy],xmm0
 
-                   movss xmm0, dword[check_map_point_z]
+                   movss xmm0, dword[edi+CLIENTCLASS.actor_pos_z]
                    cvtss2sd xmm0,xmm0
                    movsd [posz],xmm0
 
