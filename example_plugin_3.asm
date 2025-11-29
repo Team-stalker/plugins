@@ -38,13 +38,13 @@ iglobal
         posy                 dq ?
         posz                 dq ?
 
-        check_map_point_x_l01    dd -211.46       
+        check_map_point_x_l01    dd -211.46       ; вход на кордоне
         check_map_point_y_l01    dd -18.02
         check_map_point_z_l01    dd -136.91
 
-        check_map_point_x_l02    dd -206.46       
-        check_map_point_y_l02    dd -17.02
-        check_map_point_z_l02    dd -132.91
+        check_map_point_x_l02    dd 151.35       ; на атп возле трактора
+        check_map_point_y_l02    dd -3.93
+        check_map_point_z_l02    dd -21.63
 
         medkit_scientic      db 'medkit_scientic',0
 endg
